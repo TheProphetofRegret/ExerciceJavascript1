@@ -135,8 +135,8 @@ $(document).ready(function ()
 
     function emptyElevatorsNumberAndPricesFields() 
     {
-        $("#numElev_3").val("");
-        $(".priceField").val("");
+        $('#numElev_3').val('');
+        $('.priceField').val('');
         $("#numElev_2").val(""); //Reset it damnit.
     }
 
@@ -155,10 +155,10 @@ $(document).ready(function ()
     //If you arrange {blocks of codes like these} in this way it is easier to determine where to put additional code.
     function negativeValues() 
     {
-        if ($("#numApp").val() < 0) 
+        if ($('#numApp').val() < 0) 
         {
             alert("Please enter a positive number!");
-            $("#numApp").val("");
+            $('#numApp').val('');
             return true
         }
         //Added additional condition to check if the Floor number is negative.
@@ -169,45 +169,45 @@ $(document).ready(function ()
             return true
         }
 
-        else if ($("#numBase").val() < 0) 
+        else if ($('#numBase').val() < 0) 
         {
             alert("Please enter a positive number!");
-            $("#numBase").val("");
+            $('#numBase').val('');
             return true
         }
 
-        else if ($("#numComp").val() < 0) 
+        else if ($('#numComp').val() < 0) 
         {
             alert("Please enter a positive number!");
-            $("#numComp").val("");
+            $('#numComp').val('');
             return true
         }
 
-        else if ($("#numPark").val() < 0) 
+        else if ($('#numPark').val() < 0) 
         {
             alert("Please enter a positive number!");
-            $("#numPark").val("");
+            $('#numPark').val('');
             return true
         }
 
-        else if ($("#numElev").val() < 0) 
+        else if ($('#numElev').val() < 0) 
         {
             alert("Please enter a positive number!");
-            $("#numElev").val("");
+            $('#numElev').val('');
             return true
         }
 
-        else if ($("#numCorpo").val() < 0) 
+        else if ($('#numCorpo').val() < 0) 
         {
             alert("Please enter a positive number!");
-            $("#numCorpo").val("");
+            $('#numCorpo').val('');
             return true
         }
 
-        else if ($("#maxOcc").val() < 0) 
+        else if ($('#maxOcc').val() < 0) 
         {
             alert("Please enter a positive number!");
-            $("#maxOcc").val("");
+            $('#maxOcc').val('');
             return true
         }
 
@@ -229,7 +229,7 @@ $(document).ready(function ()
         {
             type: "POST",
             // url: 'http://localhost:3000/api/quoteCalculation/', //for local testing
-            url: "https://rocketelevators-quote.herokuapp.com/api/quoteCalculation/",
+            url: 'https://rocketelevators-quote.herokuapp.com/api/quoteCalculation/',
             data: JSON.stringify(formData),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -247,29 +247,29 @@ $(document).ready(function ()
     //more readable this way.
     function doCalc() 
     {
-        if ($("#residential").hasClass("active") && 
+        if ($('#residential').hasClass('active') && 
         !negativeValues() && 
-        $("#numApp").val() &&
-        $("#numFloors").val())
+        $('#numApp').val() &&
+        $('#numFloors').val())
         {
-            apiCall("residential");
+            apiCall('residential');
         }
 
-        else if ($("#commercial").hasClass("active") &&
+        else if ($('#commercial').hasClass('active') &&
         !negativeValues() && 
-        $("#numElev").val() 
+        $('#numElev').val() 
         /* $('#numPark').val()*/) //This instruction prevented from calculation to be fired when N. of Shafts had an input.
         {
-            apiCall("commercial");
+            apiCall('commercial');
         }
 
-        else if ($("#corporate").hasClass("active") &&
+        else if ($('#corporate').hasClass('active') &&
         !negativeValues() &&
-        $("#numFloors").val() &&
-        $("#numBase").val() &&
-        $("#maxOcc").val()) 
+        $('#numFloors').val() &&
+        $('#numBase').val() &&
+        $('#maxOcc').val()) 
         {
-            apiCall("corporate"); //Wrong specifications fixed from commercial to corporate
+            apiCall('corporate'); //Wrong specifications fixed from commercial to corporate
         }
 
         else if ($("#hybrid").hasClass("active") &&
