@@ -5,48 +5,57 @@ $(document).ready(function () {
     var prodRange = {
         type: null,
         price: null,
-        installationFeePercentage: null
-    };
+        installationFeePercentage: null,
+    }
 
     $('.formField').on('keyup', function () {
         doCalc();
-    });
+    })
 
 
-    $('#standart, #premium, #excelium').on('click', function () {
+    //At least it's more specific and fixes the problem where only the standard price is displayed! But it's hideous.
+    $('#standard').on('click', function () {
         document.getElementById('elevPriceUnit').value = (7565).toFixed(2) + " $";
         doCalc();
-    });
+    })
+    $('#premium').on('click', function () {
+        document.getElementById('elevPriceUnit').value = (12345).toFixed(2) + " $";
+        doCalc();
+    })
+    $('#excelium').on('click', function () {
+        document.getElementById('elevPriceUnit').value = (15400).toFixed(2) + " $";
+        doCalc();
+    })
 
     $('#residential, #commercial, #corporate, #hybrid').on('click', function () {
         initialize();
-    });
+    })
 
 
     function initialize() {
         $('.formField').val('');
         $('.productRangeBtn').prop('checked', false);
-    };
+    }
 
     function getInfoNumApp() {
         numApp = $('#numApp').val();
-    };
+    }
 
     function getInfoNumFloors() {
         numFloors = $('#numFloors').val();
-    };
+    }
 
     function getInfoNumBase() {
         numBase = $('#numBase').val();
-    };
+    }
 
     function getInfoNumElev() {
         numElev = $('#numElev').val();
-    };
+    }
 
     function getInfoMaxOcc() {
         maxOcc = $('#maxOcc').val();
-    };
+    }
 
     function getProdRange() {
         if ($('#standard').is(':checked')) {
@@ -57,7 +66,7 @@ $(document).ready(function () {
 
         } else if ($('#premium').is(':checked')) {
             prodRange.type = "premium";
-            prodRange.price = parseFloat(123456);
+            prodRange.price = parseFloat(12345);
             prodRange.installationFeePercentage = 0.13;
             return prodRange;
 
@@ -67,35 +76,40 @@ $(document).ready(function () {
             prodRange.installationFeePercentage = 0.16;
             return prodRange;
         } else {
-            prodRange.type = null,
-            prodRange.price = null,
-            prodRange.installationFeePercentage = null
+            prodRange.type = null;
+            prodRange.price = null;
+            prodRange.installationFeePercentage = null;
             return prodRange;
         }
-    };
+    }
 
+    //This function seems to be the one giving the numbers to the final result fields. More tracking needed to fully understand.
     function GetInfos() {
+        getInfoNumApp();
         getInfoNumFloors();
         getInfoNumBase();
         getInfoNumElev();
         getInfoMaxOcc();
         getProdRange();
-    };
+    }
 
+    //NaN fault by specifying it is a Number
     function setRequiredElevatorsResult(finNumElev) {
-        $("#numElev_2, #numElev_3").val(parseFloat(finNumElev));
-    };
+        $("#numElev_1, #numElev_2, #numElev_3").val(parseFloat(Number(finNumElev)));
+    }
 
+    //NaN faults fixed by specifying that it is a Number
     function setPricesResults(finNumElev, roughTotal, installFee, total) {
-        $("#elevTotal").val(parseFloat(roughTotal).toFixed(2) + " $");
-        $("#installationFee").val(parseFloat(installFee).toFixed(2) + " $");
-        $("#total_").val(parseFloat(total).toFixed(2) + " $");
-    };
+        $("#elevTotal").val(parseFloat(Number(roughTotal)).toFixed(2) + " $"); 
+        $("#installationFee").val(parseFloat(Number(installFee)).toFixed(2) + " $");
+        $("#total_").val(parseFloat(Number(total)).toFixed(2) + " $");
+    }
 
     function emptyElevatorsNumberAndPricesFields() {
         $('#numElev_3').val('');
         $('.priceField').val('');
-    };
+        $("#numElev_2").val("");
+    }
 
     function createFormData(projectType) {
         return {
@@ -106,54 +120,70 @@ $(document).ready(function () {
             productRange: prodRange,
             projectType: projectType
         }
-    };
-
+    }
+    //If you arrange {blocks of codes like these} in this way it is easier to determine where to put additional code.
     function negativeValues() {
-        if ($('#numApp').val() < 0) {
-
+        if ($('#numApp').val() < 0) 
+        {
             alert("Please enter a positive number!");
             $('#numApp').val('');
             return true
+        }
+        //Added additional condition to check if the Floor number is negative.
+        else if ($("#numFloors").val() < 0)
+        {
+            alert("Please enter a positive number!");
+            $("#numFloors").val("");
+            return true
+        }
 
-        } else if ($('#numBase').val() < 0) {
-
+        else if ($('#numBase').val() < 0) 
+        {
             alert("Please enter a positive number!");
             $('#numBase').val('');
             return true
+        }
 
-        } else if ($('#numComp').val() < 0) {
-
+        else if ($('#numComp').val() < 0) 
+        {
             alert("Please enter a positive number!");
             $('#numComp').val('');
             return true
+        }
 
-        } else if ($('#numPark').val() < 0) {
-
+        else if ($('#numPark').val() < 0) 
+        {
             alert("Please enter a positive number!");
             $('#numPark').val('');
             return true
+        }
 
-        } else if ($('#numElev').val() < 0) {
-
+        else if ($('#numElev').val() < 0) 
+        {
             alert("Please enter a positive number!");
             $('#numElev').val('');
             return true
+        }
 
-        } else if ($('#numCorpo').val() < 0) {
-
+        else if ($('#numCorpo').val() < 0) 
+        {
             alert("Please enter a positive number!");
             $('#numCorpo').val('');
             return true
+        }
 
-        } else if ($('#maxOcc').val() < 0) {
-
+        else if ($('#maxOcc').val() < 0) 
+        {
             alert("Please enter a positive number!");
             $('#maxOcc').val('');
             return true
-        } else {
+        }
+
+        else 
+        {
             return false
         }
-    };
+    }
 
     function apiCall(projectType) {
         //Getting numbers from quote
@@ -175,18 +205,48 @@ $(document).ready(function () {
                     setPricesResults(data.finalNumElev, data.subTotal, data.installationFee, data.grandTotal);
                 }
             }
-        });
+        })
     }
     
+    //more readable this way.
     function doCalc() {
-        if ($('#residential').hasClass('active') && !negativeValues() && $('#numApp').val() && $('#numFloors').val()) {
-            apiCall('residential')
-        } else if ($('#commercial').hasClass('active') && !negativeValues() && $('#numElev').val()  && $('#numPark').val()) {
-            apiCall('commercial')
-        } else if ($('#corporate').hasClass('active') && !negativeValues() && $('#numFloors').val() && $('#numBase').val() && $('#maxOcc').val()) {
-            apiCall('commercial')
-        } else {
+        if ($('#residential').hasClass('active') && 
+        !negativeValues() && 
+        $('#numApp').val() &&
+        $('#numFloors').val())
+        {
+            apiCall('residential');
+        }
+
+        else if ($('#commercial').hasClass('active') &&
+        !negativeValues() && 
+        $('#numElev').val() 
+        /* $('#numPark').val()*/) //This instruction prevented from calculation to be fired when N. of Shafts had an input.
+        {
+            apiCall('commercial');
+        }
+
+        else if ($('#corporate').hasClass('active') &&
+        !negativeValues() &&
+        $('#numFloors').val() &&
+        $('#numBase').val() &&
+        $('#maxOcc').val()) 
+        {
+            apiCall('corporate'); //Wrong specifications fixed from commercial to corporate
+        }
+
+        else if ($("#hybrid").hasClass("active") &&
+        !negativeValues() &&
+        $("#numFloors").val() &&
+        $("#numBase").val() &&
+        $("#maxOcc").val())
+        {
+            apiCall("corporate"); //Hybrid buildings have the same calculation function than corporate.
+        }
+
+        else 
+        {
             emptyElevatorsNumberAndPricesFields();
-        };
-    };
-});
+        }
+    }
+})
