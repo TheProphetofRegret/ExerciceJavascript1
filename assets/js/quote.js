@@ -2,7 +2,7 @@ $(document).ready(function ()
 {
     $("#numElev_2, #numElev_3, #elevPriceUnit, #elevTotal, #installationFee, #total_").attr('readonly', true);
 
-    var numApp, numFloors, numBase, maxOcc;
+    var numApp, numFloors, numBase, maxOcc, numElev;
     var prodRange = 
     {
         type: null,
@@ -126,7 +126,7 @@ $(document).ready(function ()
     }
 
     //NaN faults fixed by specifying that it is a Number
-    function setPricesResults(roughTotal, installFee, total) 
+    function setPricesResults(finNumElev, roughTotal, installFee, total) 
     {
         $("#elevTotal").val(parseFloat(Number(roughTotal)).toFixed(2) + " $"); 
         $("#installationFee").val(parseFloat(Number(installFee)).toFixed(2) + " $");
@@ -144,6 +144,7 @@ $(document).ready(function ()
     {
         return {
             numberApp: numApp,
+            numberElev : numElev,
             numberFloors: numFloors,
             numberBase: numBase,
             maximumOcc: maxOcc,
