@@ -137,7 +137,7 @@ $(document).ready(function ()
     {
         $('#numElev_3').val('');
         $('.priceField').val('');
-        $("#numElev_2").val("");
+        $("#numElev_2").val(""); //Reset it damnit.
     }
 
     function createFormData(projectType) 
